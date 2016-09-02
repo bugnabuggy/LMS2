@@ -14,5 +14,12 @@ namespace Web.Tests.Integration
     [TestFixture]
     public class MainControllerTests
     {
+        [Test]
+        public void Should_return_shell_page()
+        {
+            Assert.IsTrue(true);
+        }
+
+
     }
 }
