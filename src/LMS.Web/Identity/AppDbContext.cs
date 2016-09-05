@@ -1,23 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LMS.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-
-namespace LMS.Infrastructure.Data
+namespace LMS.Web.Identity
 {
-    public class LmsDbContext:DbContext, ILmsContext
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public DbSet<Area> Areas { get; set; }
-
-        IQueryable<Area> ILmsContext.Areas => Areas;
-
-        public LmsDbContext(DbContextOptions<LmsDbContext> options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

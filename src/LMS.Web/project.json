@@ -16,7 +16,8 @@
     "Microsoft.EntityFrameworkCore": "1.0.0",
     "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0",
-    "Microsoft.EntityFrameworkCore.Design": "1.0.0-preview2-final"
+    "Microsoft.EntityFrameworkCore.Design": "1.0.0-preview2-final",
+    "LMS.Utilities": "1.0.0-*"
   },
 
   "tools": {
@@ -25,7 +26,10 @@
   },
 
   "frameworks": {
-    "net452": { }
+    "net452": {
+      "frameworkAssemblies": {        
+      }
+    }
   },
 
   "buildOptions": {

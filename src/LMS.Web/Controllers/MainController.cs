@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using LMS.Infrastructure.Data;
+using LMS.Web.Identity;
 using LMS.Web.Infrastructure;
 using Microsoft.Extensions.Options;
 
@@ -14,10 +16,14 @@ namespace LMS.Web.Controllers
     public class MainController : Controller
     {
         private IOptions<Settings> _settings;
+        private ILmsContext _ctx;
+        private AppDbContext _appCtx;
 
-        public MainController(IOptions<Settings> settings)
+        public MainController(IOptions<Settings> settings, ILmsContext context, AppDbContext appCtx)
         {
             _settings = settings;
+            _ctx = context;
+            _appCtx = appCtx;
         }
 
         // GET: /<controller>/
@@ -27,6 +33,14 @@ namespace LMS.Web.Controllers
             var content = System.IO.File.ReadAllText(path);
 
             return Content(content, "text/html");
+        }
+
+        public IActionResult Db()
+        {
+            var tables = _appCtx.Model.GetEntityTypes();
+            var str = string.Join("\n\r", tables);
+
+            return Content(str);
         }
 
         public IActionResult Settings()

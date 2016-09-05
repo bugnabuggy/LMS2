@@ -1,0 +1,16 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "LMS.Utilities": "1.0.0-*",
+    "NUnit": "3.4.1",
+    "NUnit.Console": "3.4.1",
+    "NUnit.Runners": "3.4.1"
+  },
+
+  "testRunner": "nunit",
+
+  "frameworks": {
+    "net452": {}
+  }
+}

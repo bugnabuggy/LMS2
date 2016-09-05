@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LMS.Infrastructure.Data;
+using LMS.Utilities.Common;
+using LMS.Web.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +14,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using LMS.Web.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace LMS.Web
 {
@@ -23,6 +27,8 @@ namespace LMS.Web
 
         public Startup(IHostingEnvironment env)
         {
+            
+
             _environment = env;
 
             var builder = new ConfigurationBuilder()
@@ -32,6 +38,11 @@ namespace LMS.Web
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            //DB check and recreate
+            CheckDb<LmsDbContext>(Configuration.GetConnectionString("DefaultConnection"));
+            CheckDb<AppDbContext>(Configuration.GetConnectionString("DefaultConnection"));
+
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -40,6 +51,11 @@ namespace LMS.Web
         {
             services.AddDbContext<LmsDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddTransient<ILmsContext, LmsDbContext>();
 
             services.AddMvc();
 
@@ -80,6 +96,21 @@ namespace LMS.Web
                     template: "{controller=Main}/{action=Index}/{id?}");
             });
             app.UseStatusCodePages();
+        }
+
+        private IOperationResult CheckDb<T>(string connectionString) where T : DbContext
+        {
+            var result = new OperationResult() { Success = true };
+            var optionsBuilderApp = new DbContextOptionsBuilder<T>();
+            optionsBuilderApp.UseSqlServer(connectionString);
+
+            using (var context = Activator.CreateInstance(typeof(T), new object[1] { optionsBuilderApp.Options }) as T)
+            {
+                var migrator = context.GetInfrastructure().GetRequiredService<IMigrator>();
+                migrator.Migrate();
+            }
+
+            return result;
         }
     }
 }
