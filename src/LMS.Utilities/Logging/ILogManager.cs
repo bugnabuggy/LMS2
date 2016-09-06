@@ -8,7 +8,7 @@ namespace LMS.Utilities.Logging
 {
     public interface ILogManager
     {
-        IOperationResult Configure();
+        IOperationResult Configure(IEnumerable<KeyValuePair<string,string>> config = null);
         ILog GetLogger(string name = "");
     }
 }

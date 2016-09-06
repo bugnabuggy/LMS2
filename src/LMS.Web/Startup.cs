@@ -17,27 +17,39 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
+using LMS.Utilities.Logging;
+
 namespace LMS.Web
 {
     public class Startup
     {
         public IConfigurationRoot Configuration { get; }
+
         private IHostingEnvironment _environment;
+        private ILogManager _logManager;
 
 
         public Startup(IHostingEnvironment env)
         {
-            
-
             _environment = env;
 
             var builder = new ConfigurationBuilder()
                .SetBasePath(env.ContentRootPath)
                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+               .AddJsonFile($"appsettings.private.json", optional: true);
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            //Logging bootstraping
+            _logManager = new LMS.Utilities.Logging.LogManager();
+            var section = Configuration.GetSection("Logging");
+            // clear text keys from 'Logging:' prefix
+            var path = section.Path + ":";
+            _logManager.Configure(section.AsEnumerable().Select(x=> new KeyValuePair<string, string>(x.Key.Replace(path,""), x.Value)));
+
+            _logManager.GetLogger().Warn("LMS.Web is starting");
 
             //DB check and recreate
             CheckDb<LmsDbContext>(Configuration.GetConnectionString("DefaultConnection"));
@@ -57,6 +69,8 @@ namespace LMS.Web
 
             services.AddTransient<ILmsContext, LmsDbContext>();
 
+            services.AddSingleton<ILogManager>(_logManager);
+
             services.AddMvc();
 
             services.AddOptions();
@@ -72,7 +86,6 @@ namespace LMS.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-            
 
             if (env.IsDevelopment())
             {
@@ -100,6 +113,7 @@ namespace LMS.Web
 
         private IOperationResult CheckDb<T>(string connectionString) where T : DbContext
         {
+            _logManager.GetLogger().Info($"Checking db context {typeof(T).Name}");
             var result = new OperationResult() { Success = true };
             var optionsBuilderApp = new DbContextOptionsBuilder<T>();
             optionsBuilderApp.UseSqlServer(connectionString);

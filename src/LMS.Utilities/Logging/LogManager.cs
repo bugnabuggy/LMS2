@@ -5,20 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using LMS.Utilities.Common;
 using LMS.Utilities.Exceptions;
-
+using LMS.Utilities.Logging.Log4net;
 
 namespace LMS.Utilities.Logging
 {
     public class LogManager :ILogManager
     {
-        public IOperationResult Configure()
+        public IOperationResult Configure(IEnumerable<KeyValuePair<string, string>> config = null)
         {
             var result = new OperationResult() { Success = true };
 
             try
             {
-                var fileInfo = new FileInfo("log4net.config");
-                //log4net.Config.XmlConfigurator.Configure(fileInfo);
+                new HardcodedLog4netConfigurator().Configure(config);
             }
             catch(Exception exp)
             {
@@ -28,11 +27,6 @@ namespace LMS.Utilities.Logging
             }
 
             return result;
-        }
-
-        public static ILog Logger(string name = "")
-        {
-            return new LogManager().GetLogger(name);
         }
 
         public ILog GetLogger(string name = "")
@@ -46,5 +40,7 @@ namespace LMS.Utilities.Logging
             var logger = new Log4NetLogger(log4netLogger);
             return logger; 
         }
+
+      
     }
 }
