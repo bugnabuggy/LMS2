@@ -1,0 +1,7 @@
+{
+  "name": "lms",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "v4.0.0-alpha.4"
+  }
+}

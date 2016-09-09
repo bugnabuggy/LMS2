@@ -390,23 +390,7 @@ namespace LMS.Utilities.Logging.Log4net
                     for (; i < message.Length; i++)
                     {
                         c = message[i];
-
-                        // Accept only visible ASCII characters and space. See RFC 3164 section 4.1.3
-                        //if (((int)c >= 32) && ((int)c <= 126))
-                        //{
-                            builder.Append(c);
-                        //}
-                        // If character is newline, break and send the current line
-                        //else if ((c == '\r') || (c == '\n'))
-                        //{
-                        //    // Check the next character to handle \r\n or \n\r
-                        //    if ((message.Length > i + 1) && ((message[i + 1] == '\r') || (message[i + 1] == '\n')))
-                        //    {
-                        //        i++;
-                        //    }
-                        //    i++;
-                        //    break;
-                        //}
+                        builder.Append(c);
                     }
 
                     // Grab as a byte array

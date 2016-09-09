@@ -46,6 +46,7 @@ namespace LMS.Utilities.Logging.Log4net
 
             var appender = new Fr8RemoteSyslogAppender() {
                 Layout = layout,
+                //identity rendering dows not working properly
                 //Identity = identity,
                 RemoteAddress = remoteServer,
                 RemotePort = int.Parse(remotePort)

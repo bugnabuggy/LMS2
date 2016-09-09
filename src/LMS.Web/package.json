@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "name": "lms",
+  "private": true,
+
+  "dependencies": {
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
