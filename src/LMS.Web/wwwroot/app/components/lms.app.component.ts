@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+
+
+
 @Component({
   selector: 'lms-app',
-  templateUrl: '\\templates\\mainApp.html'
+  templateUrl: '/templates/mainApp.html'
 })
-
-
-export class AppComponent { }
+export class LmsAppComponent { }

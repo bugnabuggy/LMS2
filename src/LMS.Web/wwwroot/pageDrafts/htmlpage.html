@@ -7,8 +7,11 @@
     <link rel="icon" type="image/x-icon" href="../lms.ico">
     <link rel="stylesheet" href="../css/styles.css">
 
-    <script src="../lib/jquery/dist/jquery.js"></script>
     <link href="../lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="../lib/jquery/dist/jquery.js"></script>
+    <script src="../lib/tether/dist/js/tether.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
 
 </head>
 <body>
@@ -28,18 +31,25 @@
                 <a class="nav-link" href="#">About</a>
             </li>
         </ul>
-        <form class="form-inline pull-xs-right">
-            <input class="form-control" type="text" placeholder="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-    </nav>
+        <div class="dropdown pull-xs-right">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown button
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/lms">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </div>
 
+
+    </nav>
     <div class="container">
-        <div class="row">
-            <div class="col-sm-4 lms-tile">
+        <div class="" style="display:flex;min-height:300px;">
+            <div class="col-xs-12 col-sm-4 lms-tile" style="background-color:antiquewhite">
                 One of three columns
             </div>
-            <div class="col-sm-8">
+            <div class="col-xs-12 col-sm-8" style="background-color:aquamarine">
                 One of three columns
             </div>
         </div>
